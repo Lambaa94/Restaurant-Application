@@ -13,6 +13,8 @@ app.use(express.json());
 var reservedTables = [];
 
 
+
+
 // displaying HTML
  app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "index.html"));
@@ -29,11 +31,15 @@ var reservedTables = [];
   // Below is unfinished code
   // Needs Work
   app.get("/api/tables", (req, res) => {
-    reservedTables.slice(0, 5);
+    
+    return res.json(reservedTables.slice(0, 5));
+
   })
   
-  app.get("api/waitlist", (req,res) => {
-    reservedTables.slice(6);
+  app.get("/api/waitlist", (req,res) => {
+
+   return res.json(reservedTables.slice(5));
+
   })
 
  
@@ -43,17 +49,27 @@ var reservedTables = [];
   app.post("/api/tables", function(req, res) {
     var newTable = req.body;
     console.log(newTable)
-    
-    if (reservations.length < 5) {
     reservedTables.push(newTable);
+
+    if (reservedTables.length <= 5) {
+
     
-    res.json(newCharacter);
+    res.json(true);
+
   } else {
-    waitList.push(newTable)
+
+    res.json(false);
+
   };
   
 });
 
+app.post("/api/clear", function(req, res) {
+
+  reservedTables = [];
+  res.json(true);
+
+});
 
 
 app.listen(PORT, function () {
